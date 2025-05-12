@@ -9,7 +9,7 @@ import '../bloc/items/items_state.dart';
 import '../widgets/item_card.dart';
 
 class ItemsPage extends StatelessWidget {
-  const ItemsPage({Key? key}) : super(key: key);
+  const ItemsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +22,9 @@ class ItemsPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         body: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: 80.w,
+            horizontal: 80.w, // 80px margin on each side as specified
             vertical: 16.h,
-          ), // Horizontal padding from Figma: 80
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -128,7 +128,14 @@ class ItemsPage extends StatelessWidget {
   Widget _buildItemsGrid(BuildContext context, List items, bool isDesktop) {
     // Determine number of columns based on screen size
     int crossAxisCount;
-    if (ResponsiveBreakpoints.of(context).largerThan(DESKTOP)) {
+    double horizontalSpacing = 16.w; // 16px horizontal spacing between cards
+    double verticalSpacing = 20.h; // 20px vertical spacing between cards
+
+    // Calculate crossAxisCount based on screen width
+    // At 1440px design width, we want 5 cards
+    if (ResponsiveBreakpoints.of(context).screenWidth >= 1440.w) {
+      crossAxisCount = 5; // 5 cards at 1440px as specified
+    } else if (ResponsiveBreakpoints.of(context).largerThan(DESKTOP)) {
       crossAxisCount = 4; // XL screens
     } else if (ResponsiveBreakpoints.of(context).largerThan(TABLET)) {
       crossAxisCount = 3; // Desktop
@@ -138,12 +145,16 @@ class ItemsPage extends StatelessWidget {
       crossAxisCount = 1; // Mobile
     }
 
+    // Calculate the aspect ratio based on the card dimensions
+    // The aspect ratio is width / height (243.25 / 322)
+    const double aspectRatio = 243.25 / 322; // Card width / height ratio
+
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: crossAxisCount,
-        childAspectRatio: 244 / 322, // Card dimensions from Figma: 244 x 322
-        crossAxisSpacing: 24.w,
-        mainAxisSpacing: 24.h,
+        childAspectRatio: aspectRatio,
+        crossAxisSpacing: horizontalSpacing,
+        mainAxisSpacing: verticalSpacing,
       ),
       itemCount: items.length,
       itemBuilder: (context, index) {
