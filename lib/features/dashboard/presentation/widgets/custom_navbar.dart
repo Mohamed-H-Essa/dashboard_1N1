@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/themes/app_theme.dart';
@@ -62,22 +63,22 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
             children: [
               // Settings icon
               IconButton(
-                icon: Image.asset(
-                  'assets/images/gear_icon.png',
+                icon: SvgPicture.asset(
+                  'assets/images/settings_icon.svg',
                   width: 20,
                   height: 20,
-                  color: Colors.white,
+                  colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
                 ),
                 onPressed: () {},
               ),
 
               // Notification bell
               IconButton(
-                icon: Image.asset(
-                  'assets/images/noti_icon.png',
+                icon: SvgPicture.asset(
+                  'assets/images/noti_icon.svg',
                   width: 20,
                   height: 20,
-                  color: Colors.white,
+                  colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
                 ),
                 onPressed: () {},
               ),
@@ -144,22 +145,22 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
 
           // Settings icon
           IconButton(
-            icon: Image.asset(
-              'assets/images/gear_icon.png',
+            icon: SvgPicture.asset(
+              'assets/images/settings_icon.svg',
               width: 24,
               height: 24,
-              color: Colors.white,
+              colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
             ),
             onPressed: () {},
           ),
 
           // Notification bell
           IconButton(
-            icon: Image.asset(
-              'assets/images/noti_icon.png',
+            icon: SvgPicture.asset(
+              'assets/images/noti_icon.svg',
               width: 24,
               height: 24,
-              color: Colors.white,
+              colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
             ),
             onPressed: () {},
           ),
@@ -232,8 +233,8 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Widget _buildLogo({bool small = false}) {
-    return Image.asset(
-      'assets/images/logo.png',
+    return SvgPicture.asset(
+      'assets/images/logo1.svg',
       height: small ? 30 : 40, // Logo height from Figma: 40
       width: small ? 62 : 82, // Logo width from Figma: 82
       fit: BoxFit.contain,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import '../../../../core/themes/app_theme.dart';
 import '../bloc/items/items_bloc.dart';
@@ -90,12 +91,12 @@ class ItemsPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(90),
                 color: AppTheme.cardColor,
               ),
-              // Using tune.png from assets
-              child: Image.asset(
-                'assets/images/tune.png',
-                width: 30,
-                height: 30,
-                color: Colors.white,
+              // Using tune.svg from assets
+              child: SvgPicture.asset(
+                'assets/images/tune.svg',
+                width: 20,
+                height: 20,
+                colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
               ),
             ),
 
