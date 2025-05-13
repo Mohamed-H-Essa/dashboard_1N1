@@ -29,7 +29,7 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
 
   Widget _buildMobileNavbar(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: EdgeInsets.symmetric(horizontal: 80.w),
       child: Row(
         children: [
           // Hamburger menu
@@ -51,13 +51,16 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
             children: [
               // Settings icon
               IconButton(
-                icon: const Icon(Icons.settings, color: Colors.white),
+                icon: const Icon(Icons.settings_outlined, color: Colors.white),
                 onPressed: () {},
               ),
 
               // Notification bell
               IconButton(
-                icon: const Icon(Icons.notifications, color: Colors.white),
+                icon: const Icon(
+                  Icons.notifications_outlined,
+                  color: Colors.white,
+                ),
                 onPressed: () {},
               ),
 
@@ -84,7 +87,7 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
     final navigationBloc = BlocProvider.of<NavigationBloc>(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: EdgeInsets.symmetric(horizontal: 80.w),
       child: Row(
         children: [
           // Logo
@@ -150,7 +153,7 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
               ),
               const Icon(
                 Icons.keyboard_arrow_down,
-                color: Colors.white,
+                color: Color(0xFFFFFFFF),
                 size: 16,
               ),
             ],
@@ -184,8 +187,9 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
         child: Text(
           item.title,
           style: TextStyle(
-            color: isSelected ? AppTheme.primaryOrange : Colors.white,
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            color:
+                isSelected ? const Color(0xFFFFFFFF) : const Color(0xFF999999),
+            fontWeight: isSelected ? FontWeight.w500 : FontWeight.normal,
           ),
         ),
       ),
@@ -195,8 +199,8 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
   Widget _buildLogo({bool small = false}) {
     return Image.asset(
       'assets/images/logo.png',
-      height: small ? 30.h : 40.h, // Logo height from Figma: 40
-      width: small ? 62.w : 82.w, // Logo width from Figma: 82
+      height: small ? 30 : 40, // Logo height from Figma: 40
+      width: small ? 62 : 82, // Logo width from Figma: 82
       fit: BoxFit.contain,
     );
   }
@@ -267,19 +271,19 @@ class CustomDrawer extends StatelessWidget {
                           _getIconData(item.icon),
                           color:
                               isSelected
-                                  ? AppTheme.primaryOrange
-                                  : Colors.white,
+                                  ? const Color(0xFFFFFFFF)
+                                  : const Color(0xFF999999),
                         ),
                         title: Text(
                           item.title,
                           style: TextStyle(
                             color:
                                 isSelected
-                                    ? AppTheme.primaryOrange
-                                    : Colors.white,
+                                    ? const Color(0xFFFFFFFF)
+                                    : const Color(0xFF999999),
                             fontWeight:
                                 isSelected
-                                    ? FontWeight.bold
+                                    ? FontWeight.w500
                                     : FontWeight.normal,
                           ),
                         ),

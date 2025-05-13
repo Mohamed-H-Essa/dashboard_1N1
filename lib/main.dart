@@ -4,10 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'core/constants/app_constants.dart';
 import 'core/themes/app_theme.dart';
+import 'core/utils/utils.dart'; // Import the utils barrel file
 import 'features/dashboard/presentation/bloc/navigation_bloc.dart';
 import 'features/dashboard/presentation/pages/dashboard_page.dart';
 
 void main() {
+  // Example of using the debug extension
+  // Example with custom formatter
+
   runApp(const MyApp());
 }
 

@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:project_management_dashboard/core/utils/debug_utils.dart';
 import '../../../../core/themes/app_theme.dart';
 import '../../../dashboard/domain/models/item_model.dart';
 
@@ -9,131 +12,156 @@ class ItemCard extends StatelessWidget {
   final ItemModel item;
   final bool isDesktop;
 
-  const ItemCard({super.key, required this.item, required this.isDesktop});
+  const ItemCard({
+    super.key,
+    required this.item,
+    required this.isDesktop,
+    required this.aspectRatio,
+  });
 
+  // The standard aspect ratio for the card (width / height)
+  final double aspectRatio;
   @override
   Widget build(BuildContext context) {
-    // Card dimensions based on design specifications
-    final double cardWidth = 243.25.w; // Exact width as specified
-    final double cardHeight = 322.h;
-    final double imageHeight = cardHeight * 0.57; // 57% of card height
-    final double contentHeight = cardHeight * 0.57; // 57% of card height
-    final Color cardColor = Colors.black;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Calculate dimensions based on the constraints provided by the parent
+        final double cardWidth = constraints.maxWidth;
+        final double cardHeight = cardWidth / aspectRatio;
 
-    return Container(
-      width: cardWidth,
-      height: cardHeight,
-      decoration: BoxDecoration(
-        color: cardColor,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Stack(
-        children: [
-          // Image with gradient overlay
-          _buildImageSection(imageHeight),
+        // Calculate component heights based on percentages
+        final double imageHeight = cardHeight * 0.57; // 57% of card height
+        final double contentHeight = cardHeight * 0.57; // 57% of card height
 
-          // Content section (overlaps with image)
-          Positioned(
-            bottom: 0,
-            child: _buildContentSection(contentHeight, cardWidth),
+        return Container(
+          width: cardWidth,
+          height: cardHeight,
+          decoration: BoxDecoration(
+            // color: Colors.black, // Pure black background
+            color: AppTheme.cardColor,
+            borderRadius: BorderRadius.circular(8),
           ),
+          child: Stack(
+            children: [
+              // Image with gradient overlay
+              _buildImageSection(imageHeight),
 
-          // Options menu (three dots)
-          Positioned(top: 12.h, right: 12.w, child: _buildOptionsMenu()),
+              // Content section (overlaps with image)
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: contentHeight,
+                child: _buildContentSection(contentHeight),
+              ),
 
-          // Status badge
-          Positioned(
-            top: imageHeight - 24.h, // Position it to overlap the image
-            left: 16.w,
-            child: _buildStatusBadge(),
+              // Options menu (three dots)
+              Positioned(top: 12.r, right: 12.r, child: _buildOptionsMenu()),
+
+              // Status badge
+              // Positioned(
+              //   top: imageHeight - 24.r, // Position it to overlap the image
+              //   left: 16.r,
+              //   child: _buildStatusBadge(),
+              // ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
   Widget _buildImageSection(double height) {
-    return Container(
-      height: height,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(12.r),
-          topRight: Radius.circular(12.r),
+    return Column(
+      children: [
+        Container(
+          width: double.infinity,
+          height: height,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(12.r),
+              topRight: Radius.circular(12.r),
+            ),
+            image: DecorationImage(
+              image: AssetImage(item.imageUrl),
+              fit: BoxFit.cover,
+            ),
+          ),
+          foregroundDecoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(12.r),
+              topRight: Radius.circular(12.r),
+            ),
+            // Linear gradient overlay that fades from fully visible at the top
+            // to #999999 at the bottom with a stop point at 40% from the bottom
+            gradient: const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.transparent, AppTheme.cardColor],
+              stops: [0.1, 1.0], // 0.6 represents 40% from the bottom
+            ),
+          ),
         ),
-
-        image: DecorationImage(
-          image: AssetImage(item.imageUrl),
-          fit: BoxFit.cover,
-        ),
-      ),
-      foregroundDecoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(12.r),
-          topRight: Radius.circular(12.r),
-        ),
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Colors.transparent,
-            const Color(0xFF999999), // Specific color as per requirements
-          ],
-          stops: const [0.6, 1.0], // Stop at 40% from bottom
-        ),
-      ),
+      ],
     );
   }
 
-  Widget _buildContentSection(double height, double width) {
+  Widget _buildContentSection(double height) {
     return Container(
-      height: height,
-      width: width,
-      padding: EdgeInsets.all(16.r),
-      decoration: BoxDecoration(
-        color: Colors.black, // Content section background
-        borderRadius: BorderRadius.circular(12.r),
-      ),
+      padding: EdgeInsets.all(16),
+
+      // color: Colors.green,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Space for the status badge
-          SizedBox(height: 24.h),
+          _buildStatusBadge(),
 
+          SizedBox(height: 8),
           // Title
           Text(
             item.title,
             style: GoogleFonts.inter(
               color: Colors.white,
-              fontSize: 18.sp,
+              fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
 
-          SizedBox(height: 8.h),
+          SizedBox(height: 8),
 
           // Date
           Row(
             children: [
               Icon(
                 Icons.calendar_today_outlined,
-                size: 14.sp,
+                size: 14,
                 color: Colors.white70,
               ),
-              SizedBox(width: 4.w),
-              Text(
-                _formatDateRange(item.startDate, item.endDate),
-                style: GoogleFonts.inter(
-                  color: Colors.white70,
-                  fontSize: 12.sp,
-                ),
+              SizedBox(width: 4),
+              Builder(
+                builder: (context) {
+                  return Text(
+                    _formatDateRange(item.startDate, item.endDate),
+                    style: GoogleFonts.inter(
+                      color: Colors.white70,
+                      fontSize: clampDouble(
+                        MediaQuery.of(context).size.width * 0.04,
+                        10,
+                        12,
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),
 
-          const Spacer(),
+          // const Spacer(),
+          Divider(),
 
           // User avatars and task count
           Row(
@@ -145,10 +173,7 @@ class ItemCard extends StatelessWidget {
               // Task count
               Text(
                 '${item.unfinishedTasks} unfinished tasks',
-                style: GoogleFonts.inter(
-                  color: Colors.white70,
-                  fontSize: 12.sp,
-                ),
+                style: GoogleFonts.inter(color: Colors.white70, fontSize: 12),
               ),
             ],
           ),
@@ -159,23 +184,24 @@ class ItemCard extends StatelessWidget {
 
   Widget _buildOptionsMenu() {
     return Container(
-      padding: EdgeInsets.all(8.r),
+      padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Colors.black.withAlpha(153), // 0.6 opacity
         shape: BoxShape.circle,
       ),
-      child: Icon(Icons.more_horiz, color: Colors.white, size: 16.sp),
+      child: Icon(Icons.more_horiz, color: Colors.white, size: 16),
     );
   }
 
   Widget _buildStatusBadge() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
       decoration: BoxDecoration(
-        color: Colors.black.withAlpha(179), // 0.7 opacity
-        borderRadius: BorderRadius.circular(20.r),
+        color:
+            AppTheme.statusBackground, // Using the new statusBackground color
+        borderRadius: BorderRadius.circular(900.r),
         border: Border.all(
-          color: AppTheme.primaryOrange.withAlpha(128), // 0.5 opacity
+          color: AppTheme.statusBorder, // Using the new statusBorder color
           width: 1,
         ),
       ),
@@ -185,17 +211,12 @@ class ItemCard extends StatelessWidget {
           Text(
             item.status,
             style: GoogleFonts.inter(
-              color: AppTheme.primaryOrange,
-              fontSize: 12.sp,
+              fontSize: 14, // Updated to match the preferred font size
               fontWeight: FontWeight.w500,
             ),
           ),
-          SizedBox(width: 4.w),
-          Icon(
-            Icons.keyboard_arrow_down,
-            color: AppTheme.primaryOrange,
-            size: 16.sp,
-          ),
+          SizedBox(width: 3),
+          Icon(Icons.keyboard_arrow_down, size: 16),
         ],
       ),
     );
@@ -218,27 +239,47 @@ class ItemCard extends StatelessWidget {
           i++
         )
           Align(
-            widthFactor: 0.7,
-            child: CircleAvatar(
-              radius: 12.r,
-              backgroundColor: Colors.white,
-              backgroundImage: NetworkImage(item.assignedUserAvatars[i]),
+            widthFactor: 0.5,
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: AppTheme.usersAvatarBorder, width: 1),
+                // image: DecorationImage(
+                //   // image: NetworkImage(item.assignedUserAvatars[i]),
+                //   // image: NetworkImage('https://picsum.photos/200/300'),
+                //   fit: BoxFit.cover,
+                // ),
+              ),
+              child: CircleAvatar(
+                radius: 12,
+                // backgroundColor: Colors.white,
+                backgroundImage: NetworkImage(
+                  item.assignedUserAvatars[i]..tk421('Room111'),
+                ),
+                // backgroundImage: NetworkImage('https://picsum.photos/200/300'),
+              ),
             ),
           ),
 
         // Display remaining count if any
         if (remainingCount > 0)
           Align(
-            widthFactor: 0.7,
-            child: CircleAvatar(
-              radius: 12.r,
-              backgroundColor: Colors.grey,
-              child: Text(
-                '+$remainingCount',
-                style: GoogleFonts.inter(
-                  color: Colors.white,
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.bold,
+            widthFactor: 0.5,
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: AppTheme.usersAvatarBorder, width: 2),
+              ),
+              child: CircleAvatar(
+                radius: 12,
+                backgroundColor: AppTheme.usersAvatarBorder,
+                child: Text(
+                  '+$remainingCount',
+                  style: GoogleFonts.inter(
+                    color: AppTheme.orangeYellow,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -249,6 +290,6 @@ class ItemCard extends StatelessWidget {
 
   String _formatDateRange(DateTime start, DateTime end) {
     final DateFormat formatter = DateFormat('MMM d');
-    return '${formatter.format(start)} - ${formatter.format(end)}, ${end.year}';
+    return ' 4 Nights (${formatter.format(start)} - ${formatter.format(end)}, ${end.year})';
   }
 }
