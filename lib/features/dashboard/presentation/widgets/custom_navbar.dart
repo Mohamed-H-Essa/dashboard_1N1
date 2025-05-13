@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/themes/app_theme.dart';
 import '../bloc/navigation_bloc.dart';
@@ -17,13 +18,21 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Check if we're on MOBILE or TABLET using ResponsiveBreakpoints
+    // final bool isMobileOrTablet = ResponsiveBreakpoints.of(
+    //   context,
+    // ).smallerThan(TABLET);
+
+    // // Override isDesktop parameter if we're on a mobile or tablet device
+    // final bool showMobileNavbar = isMobileOrTablet || !isDesktop;
+
     return Container(
       height: preferredSize.height,
       color: AppTheme.navbarBackground,
       child:
           isDesktop
-              ? _buildDesktopNavbar(context)
-              : _buildMobileNavbar(context),
+              ? _buildMobileNavbar(context)
+              : _buildDesktopNavbar(context),
     );
   }
 
@@ -33,12 +42,14 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
       child: Row(
         children: [
           // Hamburger menu
-          IconButton(
-            icon: const Icon(Icons.menu, color: Colors.white),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-          ),
+          // IconButton(
+          //   icon: const Icon(Icons.menu, color: Colors.white),
+          //   onPressed: () {
+          //     Scaffold.of(context).openDrawer();
+          //   },
+          // ),
+          Icon(Icons.menu, color: Colors.white),
+          SizedBox(width: 16),
 
           // Logo (now positioned to the left)
           _buildLogo(),
@@ -72,7 +83,7 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
               ),
 
               // Divider
-              const SizedBox(width: 8),
+              // const SizedBox(width: 8),
               const VerticalDivider(
                 color: Colors.white24,
                 thickness: 1,

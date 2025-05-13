@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../bloc/navigation_bloc.dart';
 import '../bloc/navigation_state.dart';
@@ -13,9 +14,15 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isDesktop = MediaQuery.of(context).size.width >= 600;
 
+    final bool isMobileOrTablet = ResponsiveBreakpoints.of(
+      context,
+    ).smallerThan(DESKTOP);
+    // Override isDesktop parameter if we're on a mobile or tablet device
+    final bool showMobileNavbar = isMobileOrTablet || !isDesktop;
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: CustomNavbar(isDesktop: isDesktop),
+      appBar: CustomNavbar(isDesktop: showMobileNavbar),
       drawer: isDesktop ? null : const CustomDrawer(),
       body: BlocBuilder<NavigationBloc, NavigationState>(
         builder: (context, state) {
