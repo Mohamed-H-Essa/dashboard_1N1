@@ -51,14 +51,21 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
             children: [
               // Settings icon
               IconButton(
-                icon: const Icon(Icons.settings_outlined, color: Colors.white),
+                icon: Image.asset(
+                  'assets/images/gear_icon.png',
+                  width: 20,
+                  height: 20,
+                  color: Colors.white,
+                ),
                 onPressed: () {},
               ),
 
               // Notification bell
               IconButton(
-                icon: const Icon(
-                  Icons.notifications_outlined,
+                icon: Image.asset(
+                  'assets/images/noti_icon.png',
+                  width: 20,
+                  height: 20,
                   color: Colors.white,
                 ),
                 onPressed: () {},
@@ -117,15 +124,32 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
             },
           ),
 
+          const VerticalDivider(
+            color: Colors.white24,
+            thickness: 1,
+            indent: 15,
+            endIndent: 15,
+          ),
+
           // Settings icon
           IconButton(
-            icon: const Icon(Icons.settings, color: Colors.white),
+            icon: Image.asset(
+              'assets/images/gear_icon.png',
+              width: 24,
+              height: 24,
+              color: Colors.white,
+            ),
             onPressed: () {},
           ),
 
           // Notification bell
           IconButton(
-            icon: const Icon(Icons.notifications, color: Colors.white),
+            icon: Image.asset(
+              'assets/images/noti_icon.png',
+              width: 24,
+              height: 24,
+              color: Colors.white,
+            ),
             onPressed: () {},
           ),
 
@@ -207,9 +231,10 @@ class CustomNavbar extends StatelessWidget implements PreferredSizeWidget {
 
   Widget _buildUserAvatar({bool small = false}) {
     return CircleAvatar(
-      radius: small ? 16 : 20,
-      backgroundColor: Colors.grey[300],
-      child: const Icon(Icons.person, color: Colors.grey),
+      radius: small ? 16 : 16,
+      // backgroundColor: Colors.grey[300],
+      backgroundImage: AssetImage('assets/images/person_random1n1.png'),
+      // child: const Icon(Icons.person, color: Colors.grey),
     );
   }
 }

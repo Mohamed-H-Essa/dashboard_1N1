@@ -99,15 +99,18 @@ class ItemsPage extends StatelessWidget {
               ),
             ),
 
-            if (isDesktop) SizedBox(width: 16.w),
+            if (isDesktop) SizedBox(width: 16),
             if (isDesktop)
-              VerticalDivider(
-                color: Colors.white,
-                thickness: 9,
-                indent: 15,
-                endIndent: 15,
+              Container(
+                height: 55,
+                child: VerticalDivider(
+                  width: 1,
+                  thickness: 1,
+                  indent: 8,
+                  endIndent: 8,
+                ),
               ),
-            if (isDesktop) SizedBox(width: 16.w),
+            if (isDesktop) SizedBox(width: 16),
 
             // Add new item button - only visible on desktop
             if (isDesktop)
@@ -141,19 +144,21 @@ class ItemsPage extends StatelessWidget {
     double webAspectRatio = 243.25 / 322;
     double mobileAspectRatio = 343 / 314;
 
+    double aspectRatio = 1;
     // Calculate crossAxisCount based on screen width
     // At 1440px design width, we want 5 cards
-    // if (ResponsiveBreakpoints.of(context).screenWidth >= 1440.w) {
-    double aspectRatio = 1;
-    if (ResponsiveBreakpoints.of(context).largerThan(DESKTOP)) {
+    if (MediaQuery.of(context).size.width >= 1500) {
       crossAxisCount = 5; // XL screens
+      aspectRatio = webAspectRatio;
+    } else if (ResponsiveBreakpoints.of(context).largerThan(DESKTOP)) {
+      crossAxisCount = 4; // XL screens
       aspectRatio = webAspectRatio;
     } else if (ResponsiveBreakpoints.of(context).largerThan(TABLET)) {
       aspectRatio = (mobileAspectRatio + 2 * webAspectRatio) / 3;
-      crossAxisCount = 4; // Desktop
+      crossAxisCount = 3; // Desktop
     } else if (ResponsiveBreakpoints.of(context).largerThan(MOBILE)) {
       aspectRatio = (mobileAspectRatio + 2 * webAspectRatio) / 3;
-      crossAxisCount = 3; // Tablet
+      crossAxisCount = 2; // Tablet
     } else {
       crossAxisCount = 1; // Mobile
       aspectRatio = mobileAspectRatio;
